@@ -1,21 +1,46 @@
 # Uses of Project Modules
+### I. 📦 Data Pipeline & Preprocessing
 
-## 1. Data Pipeline Module
+**Dataset Source:**
 
-The Data Pipeline module manages the flow of data from the dataset to the training process. It loads the surface defect image dataset and organizes the images according to different defect categories. This module prepares the data for further processing by splitting the dataset into training and validation sets. It ensures that images are efficiently supplied to the preprocessing and model training stages.
+- **Surface Defect Image Dataset** collected for industrial inspection and defect analysis.
+- The dataset contains various types of surface defects commonly found in manufactured materials.
+- **6 Defect Classes:**
+  1. **Crack** – Thin fractures appearing on the surface.
+  2. **Inclusion** – Foreign particles embedded in the material.
+  3. **Patch** – Irregular surface marks or patches.
+  4. **Pitting** – Small cavities or pits formed on the surface.
+  5. **Scale Defect** – Layered surface irregularities caused during manufacturing.
+  6. **Scratch** – Linear surface scratches caused by friction or mechanical contact.
 
-Uses:
-- Loads and organizes the defect image dataset
-- Splits the dataset into training and validation sets
-- Manages the flow of images during training
-- Ensures efficient data handling
+**Dataset Characteristics:**
 
----
+- **Image Format:** Grayscale images converted to RGB for deep learning models
+- **Image Resolution:** Resized to **128 × 128 pixels** for model training
+- **Total Images:** Approximately **1500–2000 defect images**
+- **Label Type:** Each image is associated with a defect class label
+
+**Purpose of Dataset:**
+
+The dataset is used to train the Conditional GAN model to learn defect patterns and generate realistic synthetic defect images that can be used for improving defect detection systems.
+*Processed Dataset Structure*
+
+text
+data/processed/
+├── images.npy     # Shape: (N, 128, 128, 3)
+├── labels.npy     # Shape: (N,)
+└── class_map.json # Mapping of class index to defect name
+
+**Preprocessing Steps:**
+
+1. Load raw defect images from the dataset.
+2. Convert grayscale images to RGB format.
+3. Resize all images to **128 × 128**.
+4. Normalize pixel values to the range **[-1, 1]**.
+5. Store processed images and labels for efficient training.
 
 ## 2. GAN Architecture Module
-
 The GAN Architecture module defines the structure of the Conditional Generative Adversarial Network used in the project. It consists of two main components: the Generator and the Discriminator. The Generator creates synthetic defect images, while the Discriminator evaluates whether the generated images are real or fake. Through adversarial training, the Generator learns to produce more realistic images over time.
-
 Uses:
 - Defines Generator and Discriminator networks
 - Generates synthetic defect images
