@@ -1,176 +1,76 @@
-# CGAN to Generate Synthetic Surface Defect Images
+# Uses of Project Modules
 
-## Project Overview
-This project implements a **Conditional Generative Adversarial Network (cGAN)** to generate synthetic surface defect images across multiple defect categories. The generated images help improve datasets used in industrial inspection systems and enhance the performance of machine learning models for defect detection.
+## 1. Data Pipeline Module
 
-The system follows a deep learning pipeline consisting of data preparation, generator and discriminator networks, evaluation, and monitoring modules.
+The Data Pipeline module manages the flow of data from the dataset to the training process. It loads the surface defect image dataset and organizes the images according to different defect categories. This module prepares the data for further processing by splitting the dataset into training and validation sets. It ensures that images are efficiently supplied to the preprocessing and model training stages.
 
----
-
-# System Specifications
-
-| Parameter | Value |
-|----------|------|
-| Image Size | 128 × 128 |
-| Channels | 3 (RGB) |
-| Latent Dimension | 100 |
-| Number of Classes | 7 |
-| Batch Size | 64 |
-| Epochs | 50 |
+Uses:
+- Loads and organizes the defect image dataset
+- Splits the dataset into training and validation sets
+- Manages the flow of images during training
+- Ensures efficient data handling
 
 ---
 
-# Module 1: Data Pipeline
+## 2. GAN Architecture Module
 
-The **Data Pipeline** module manages the overall flow of data through the system. It loads the dataset, organizes the images into appropriate class folders, and prepares the images for preprocessing and training.
+The GAN Architecture module defines the structure of the Conditional Generative Adversarial Network used in the project. It consists of two main components: the Generator and the Discriminator. The Generator creates synthetic defect images, while the Discriminator evaluates whether the generated images are real or fake. Through adversarial training, the Generator learns to produce more realistic images over time.
 
-Key functions of the data pipeline include:
-
-- Loading defect image datasets
-- Organizing images based on defect categories
-- Splitting the dataset into training and validation sets
-- Preparing batches of images for model training
-
-This pipeline ensures smooth and efficient data handling during the training process.
+Uses:
+- Defines Generator and Discriminator networks
+- Generates synthetic defect images
+- Learns patterns from real defect images
+- Improves image quality through adversarial learning
+- Produces class-specific defect images
 
 ---
 
-# Module 2: Data Preprocessing
+## 3. Training Module
 
-The **Data Preprocessing** module prepares images before they are fed into the neural network.
+The Training module controls the learning process of the GAN model. During training, the Generator and Discriminator are trained simultaneously. The Generator tries to create realistic images, while the Discriminator attempts to distinguish between real and generated images. The model parameters are updated using an optimizer and loss function until the generated images become realistic.
 
-Library Used:
-- ImageDataGenerator (TensorFlow/Keras)
-
-Preprocessing steps include:
-
-- Image rescaling using factor **1/127.5**
-- Normalizing pixel values to the range **[-1, 1]**
-- Resizing images to **128 × 128**
-- Directory-based class loading
-- Data splitting for training and validation
-
-These preprocessing steps standardize the dataset and improve the stability of GAN training.
+Uses:
+- Trains the Generator and Discriminator networks
+- Updates model parameters using the optimizer
+- Minimizes the loss function during training
+- Improves the quality of generated images
+- Enables the model to learn from real defect images
 
 ---
 
-# Module 3: Generator Network
+## 4. Evaluation Module
 
-The **Generator** network is responsible for generating synthetic defect images.
+The Evaluation module measures the quality and performance of the generated images. It verifies whether the synthetic images resemble real defect images. Both qualitative and quantitative evaluation methods can be used to assess the model's performance.
 
-Inputs:
-- Random noise vector of **100 dimensions**
-- Class label representing the defect category
-
-The generator uses conditional information to produce images corresponding to specific defect classes.
-
-Key layers used:
-
-- Embedding layer for class conditioning
-- Dense layers
-- Reshape layer
-- Conv2DTranspose layers for image upsampling
-- Batch Normalization
-- LeakyReLU activation
-- Output activation function **tanh**
-
-Output:
-
-```
-128 × 128 × 3 synthetic defect image
-```
-
-The generator learns to produce realistic images that resemble real industrial surface defects.
+Uses:
+- Evaluates the quality of generated images
+- Compares real and synthetic images
+- Detects training issues such as mode collapse
+- Measures diversity of generated defect classes
+- Calculates evaluation metrics such as FID or Inception Score
 
 ---
 
-# Module 4: Discriminator Network
+## 5. Deployment Module
 
-The **Discriminator** network acts as a classifier that distinguishes between real images and generated images.
+The Deployment module makes the trained model accessible to users through a user interface. In this project, a Streamlit application is used to interact with the trained generator model. Users can select defect classes and generate synthetic images in real time.
 
-Input:
-
-```
-128 × 128 × 3 image
-```
-
-Layers used:
-
-- Convolutional layers (64 to 512 filters)
-- Stride-2 downsampling
-- LeakyReLU activation
-- Dropout layers
-- Flatten layer
-- Dense output layer
-
-Output:
-
-```
-Real / Fake classification score
-```
-
-The discriminator continuously improves its ability to detect fake images, forcing the generator to produce more realistic outputs.
+Uses:
+- Deploys the trained generator model
+- Provides a user-friendly interface
+- Allows users to select defect categories
+- Generates synthetic defect images on demand
+- Demonstrates real-world application of the model
 
 ---
 
-# Module 5: Evaluation Module
+## 6. Continuous Evaluation Module
 
-The **Evaluation Module** measures the quality and performance of generated images.
+The Continuous Evaluation module monitors the performance of the GAN model during the training process. It helps track improvements in generated image quality and ensures that the model is learning properly throughout training.
 
-### Qualitative Evaluation
-
-- Visual inspection of generated images
-- Image sharpness analysis
-- Detection of mode collapse
-- Diversity of defect classes
-
-### Quantitative Evaluation
-
-- Fréchet Inception Distance (FID)
-- Inception Score
-- Classification accuracy on generated images
-
-These metrics help determine how realistic and useful the synthetic images are.
-
----
-
-# Module 6: Continuous Evaluation and Monitoring
-
-The **Continuous Evaluation Module** monitors the training progress of the GAN model throughout the training process.
-
-Monitoring techniques include:
-
-- Saving generated images after each epoch
-- Using fixed latent vectors for visual comparison
-- Generating image grids for all defect classes
-- Tracking generator and discriminator losses
-
-This module helps observe improvements in image quality and detect training issues such as mode collapse.
-
----
-
-# Hardware and Software Requirements
-
-## Software
-- Python 3.9+
-- TensorFlow / Keras
-- NumPy
-- Matplotlib
-- Seaborn
-- Streamlit
-- Scikit-learn
-
-## Hardware
-- GPU recommended (CUDA supported)
-- Minimum 8GB RAM
-- Minimum 10GB storage
-
----
-
-# Applications
-
-- Industrial surface defect inspection
-- Data augmentation for imbalanced datasets
-- Smart manufacturing systems
-- AI-assisted quality control
-- Research in generative deep learning models
+Uses:
+- Monitors generator and discriminator performance
+- Saves generated images at regular intervals
+- Tracks improvements across training epochs
+- Detects problems such as mode collapse
+- Helps analyze and improve the training process
